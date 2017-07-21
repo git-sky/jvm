@@ -1,0 +1,25 @@
+/* BTrace Script Template */
+import com.sun.btrace.annotations.*;
+import static com.sun.btrace.BTraceUtils.*;
+
+@BTrace
+public class TracingScript {
+
+@TLS
+private static long startTime=0;
+
+/**
+*方法开始时调用
+*/
+@OnMethod(clazz="/.+/",method="writeFile")
+public static void startMethod(){
+    startTime=timeMillis();
+}
+    
+@SuppressWarnings("deprecation")
+@OnMethod(clazz="/.+/",method="writeFile",location=@Location(Kind.RETURN))
+public static void endMethod(){
+        println(strcat("the class method execute time: ", str(timeMillis()-startTime)));  
+
+}
+}
